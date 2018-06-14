@@ -9,6 +9,12 @@ app.use(express.static(path.join(__dirname, "static")));
 app.use(bp.urlencoded({extended: true}));
 app.set("view engine", "pug");
 
+app.get("/", function(req, res) {
+  var mcs = fs.readFileSync("data.json");
+  mcs = JSON.parse(mcs);
+  res.render('index', {mcs: mcs});
+});
+
 app.get("/mcs", function(req, res) {
   // returns all rappers
   var mcs = fs.readFileSync("data.json");
@@ -21,7 +27,7 @@ app.get("/mcs/:id", function(req, res) {
   var mcs = fs.readFileSync("data.json");
   mcs = JSON.parse(mcs);
   var mcIndex = req.params.id;
-    res.send({mcs: mcs[mcIndex] });
+    res.send(mcs[mcIndex]);
 });
 
 app.put("/mcs/:id", function(req, res) {
